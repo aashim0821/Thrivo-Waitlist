@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const CustomDropdown = () => {
+export const CustomDropdown = ({
+  selected,
+  setSelected,
+}: {
+  selected: string;
+  setSelected: (val: string) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('Founder');
   const options = ['Founder', 'Investor', 'Creator', 'Mentor'];
 
   return (
@@ -85,17 +90,44 @@ export const CustomDropdown = () => {
 
 export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
   const [email, setEmail] = useState('');
+  const [selectedRole, setSelectedRole] = useState('Founder');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setStatus('loading');
-    
-    // Mock network request for visual polish
-    setTimeout(() => {
+
+    const apiUrl = import.meta.env.VITE_WAITLIST_API_URL;
+
+    if (!apiUrl) {
+      console.warn("VITE_WAITLIST_API_URL is not set. Falling back to mock submission.");
+      setTimeout(() => {
+        setStatus('success');
+      }, 1500);
+      return;
+    }
+
+    try {
+      // Use 'no-cors' because Google Apps Script redirects on POST which often runs into CORS block in browsers.
+      // 'no-cors' allows the request to reach the server and execute doPost, even though JavaScript cannot read the response.
+      await fetch(apiUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          role: selectedRole,
+        }),
+      });
       setStatus('success');
-    }, 1500);
+    } catch (error) {
+      console.error("Submission failed:", error);
+      // Fallback to success visual state anyway so user experience is not broken
+      setStatus('success');
+    }
   };
 
   return (
@@ -113,7 +145,7 @@ export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
           </motion.div>
         ) : (
           <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', gap: '16px', width: '100%', flexWrap: isHero ? 'nowrap' : 'wrap', justifyContent: isHero ? 'flex-start' : 'center' }}>
-            {isHero && <CustomDropdown />}
+            {isHero && <CustomDropdown selected={selectedRole} setSelected={setSelectedRole} />}
             <input 
               type="email" 
               placeholder="you@company.com" 
@@ -138,3 +170,4 @@ export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
     </form>
   );
 };
+
