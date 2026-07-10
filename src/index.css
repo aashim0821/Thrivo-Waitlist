@@ -1,0 +1,398 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
+
+:root {
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --panel-bg: rgba(255, 255, 255, 0.03);
+  --accent-teal: #00CED1;
+  --accent-green: #32CD32;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  overflow: hidden;
+  background-color: #0A0A0A;
+}
+
+/* The Aurora Mesh Gradient */
+.aurora-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(0, 206, 209, 0.4), transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(50, 205, 50, 0.4), transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(0, 206, 209, 0.3), transparent 50%);
+  filter: blur(80px);
+  animation: aurora-shift 20s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-shift {
+  0% { transform: scale(1) translate(0px, 0px) rotate(0deg); }
+  50% { transform: scale(1.2) translate(5vw, -5vh) rotate(5deg); }
+  100% { transform: scale(1.1) translate(-5vw, 5vh) rotate(-5deg); }
+}
+
+/* Base Canvas Setup */
+.canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #00CED1, #32CD32);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.section {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 4vw;
+  position: relative;
+}
+
+.hero-title {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.75; /* Extremely tight line-height */
+  margin-bottom: 28px; /* Compensate for scaling overlap */
+  text-transform: uppercase;
+  letter-spacing: -0.06em;
+  transform: scale(1.15, 1.53); /* Elongate horizontally and vertically */
+  transform-origin: left top;
+}
+
+.section-title {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 800;
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
+}
+
+.section-desc {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  font-weight: 400;
+}
+
+/* Glassmorphism UI */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--dynamic-blur, 40px));
+  -webkit-backdrop-filter: blur(var(--dynamic-blur, 40px));
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.main-nav {
+  position: fixed;
+  top: 24px;
+  left: 4vw;
+  width: 92vw;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.hero-section {
+  padding-top: 120px !important;
+}
+
+.footer-section {
+  padding-top: 160px !important;
+  padding-bottom: 40px !important;
+  min-height: auto;
+}
+
+.btn-primary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+  pointer-events: auto;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: #FFF;
+  box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  color: #FFF;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: fit-content;
+  pointer-events: auto;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Bento Grid System */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.bento-item {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 56px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.bento-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -20px rgba(50, 205, 50, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Infinite Marquee */
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  width: 100vw;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+  padding: 0 12px;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.testimonial-pill {
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #FFF;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(40px);
+}
+
+/* 3D Hover Tooltip */
+.tooltip {
+  pointer-events: none;
+  animation: fade-in 0.2s ease-out;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mock UI Animations */
+@keyframes bar-grow {
+  from { height: 0; opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pricing-grid {
+  display: flex;
+  gap: 32px;
+  margin-top: 64px;
+  width: 100%;
+  justify-content: center;
+}
+.pricing-card {
+  padding: 48px;
+  flex: 1;
+  min-width: 0; /* allows shrinking below content size if necessary */
+  display: flex;
+  flex-direction: column;
+}
+.pricing-card.premium {
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.08);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .hero-title { 
+    font-size: clamp(3rem, 15vw, 5rem); 
+    line-height: 1;
+  }
+  .bento-grid { 
+    display: flex; 
+    flex-direction: column; 
+  }
+  .bento-item { 
+    min-height: 250px !important; 
+    padding: 32px;
+  }
+  .section { 
+    padding: 100px 4vw; 
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+  .hero-section {
+    padding-top: 140px !important;
+  }
+  nav {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px !important;
+  }
+  nav > div:nth-child(2) {
+    display: none !important; /* Hide links on very small screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 110px !important;
+  }
+  .hero-title {
+    font-size: clamp(2.2rem, 10vw, 3rem) !important;
+    line-height: 0.75;
+    margin-bottom: 20px;
+  }
+  .section {
+    padding: 80px 16px !important;
+  }
+  .bento-item {
+    padding: 24px !important;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px !important;
+  }
+  .pricing-grid {
+    gap: 12px;
+  }
+  .pricing-card, .pricing-card.premium {
+    padding: 16px !important;
+  }
+  .pricing-card h3 {
+    font-size: 1.2rem !important;
+  }
+  .pricing-card div {
+    font-size: 1.8rem !important;
+  }
+  .desktop-nav-links, .desktop-auth-links {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+  .main-nav {
+    padding: 16px 24px !important;
+    left: 16px;
+    width: calc(100vw - 32px);
+  }
+  nav {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+}
+
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.mobile-menu-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  transition: 0.3s;
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  pointer-events: auto;
+}
+
