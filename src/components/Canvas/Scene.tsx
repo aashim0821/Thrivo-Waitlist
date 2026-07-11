@@ -1,7 +1,23 @@
-import { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, Component, ErrorInfo, ReactNode } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
+
+class CanvasErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}> {
+  state = { hasError: false };
+  static getDerivedStateFromError(_: Error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.warn("WebGL Canvas fell back gracefully:", error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return null;
+    }
+    return this.props.children;
+  }
+}
 
 const InteractiveParticles = () => {
   const groupRef = useRef<THREE.Group>(null);
@@ -13,8 +29,8 @@ const InteractiveParticles = () => {
     const origPos = new Float32Array(count * 3);
     const cols = new Float32Array(count * 3);
 
-    const color1 = new THREE.Color("#8BE9FD"); // Cyan
-    const color2 = new THREE.Color("#FF79C6"); // Magenta
+    const color1 = new THREE.Color("#00CED1"); // Teal
+    const color2 = new THREE.Color("#32CD32"); // Green
 
     for (let i = 0; i < count; i++) {
       // Create a long flowing ribbon/cloud
@@ -138,10 +154,12 @@ export const Scene = () => {
     <>
       <div className="aurora-bg"></div>
       <div className="canvas-container">
-        <Canvas camera={{ position: [0, 0, 15], fov: 60 }} gl={{ alpha: true, antialias: true }}>
-          <Environment preset="city" />
-          <InteractiveParticles />
-        </Canvas>
+        <CanvasErrorBoundary>
+          <Canvas camera={{ position: [0, 0, 15], fov: 60 }} gl={{ alpha: true, antialias: false, powerPreference: "low-power" }}>
+            <Environment preset="city" />
+            <InteractiveParticles />
+          </Canvas>
+        </CanvasErrorBoundary>
       </div>
     </>
   );

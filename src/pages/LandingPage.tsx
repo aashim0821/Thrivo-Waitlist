@@ -208,7 +208,7 @@ export const LandingPage = () => {
           style={{ marginTop: '64px', width: '100%', maxWidth: '1200px', perspective: '1000px' }}
         >
           <img 
-            src="/assets/dashboard-ui.png" 
+            src={`${import.meta.env.BASE_URL}assets/dashboard-ui.png`} 
             alt="Thrivo Dashboard UI" 
             style={{ 
               width: '100%', 
