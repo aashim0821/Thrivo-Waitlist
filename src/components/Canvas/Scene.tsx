@@ -1,4 +1,5 @@
-import React, { useRef, useMemo, Component, ErrorInfo, ReactNode } from 'react';
+import { useRef, useMemo, Component } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
@@ -8,7 +9,7 @@ class CanvasErrorBoundary extends Component<{children: ReactNode}, {hasError: bo
   static getDerivedStateFromError(_: Error) {
     return { hasError: true };
   }
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error) {
     console.warn("WebGL Canvas fell back gracefully:", error);
   }
   render() {
