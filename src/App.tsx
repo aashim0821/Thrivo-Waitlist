@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { Scene } from './components/Canvas/Scene';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LandingPage } from './pages/LandingPage';
@@ -74,7 +74,7 @@ function App() {
   }, []);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <Scene />
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -88,8 +88,9 @@ function App() {
         </Routes>
         <Footer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
