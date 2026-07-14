@@ -5,6 +5,7 @@ export default async function handler(req: any, res: any) {
   }
 
   const { email, role } = req.body;
+  console.log(`Received waitlist submission request: email=${email}, role=${role}`);
 
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
@@ -18,6 +19,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
+    console.log("Forwarding submission request to Google Sheets...");
     // Forward the payload to the private Google Sheets Apps Script Web App URL
     const response = await fetch(googleSheetsUrl, {
       method: 'POST',
@@ -30,9 +32,17 @@ export default async function handler(req: any, res: any) {
       }),
     });
 
+    const responseStatus = response.status;
+    console.log(`Google Sheets responded with status: ${responseStatus}`);
+
+    if (!response.ok) {
+      return res.status(502).json({ error: `Upstream error: Google Sheets returned ${responseStatus}` });
+    }
+
     return res.status(200).json({ success: true });
   } catch (error: any) {
     console.error("Error communicating with Google Sheets:", error);
     return res.status(500).json({ error: 'Failed to save waitlist sign-up.' });
   }
 }
+

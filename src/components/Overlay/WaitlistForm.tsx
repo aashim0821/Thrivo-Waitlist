@@ -91,18 +91,19 @@ export const CustomDropdown = ({
 export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
   const [email, setEmail] = useState('');
   const [selectedRole, setSelectedRole] = useState('Founder');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setStatus('loading');
 
-    // Use VITE_WAITLIST_API_URL if specified, otherwise fallback to Vercel's relative endpoint /api/waitlist
+    // Use VITE_WAITLIST_API_URL if specified (e.g., for local mock testing or direct Sheets),
+    // otherwise fallback to Vercel's relative serverless endpoint /api/waitlist.
     const apiUrl = import.meta.env.VITE_WAITLIST_API_URL || '/api/waitlist';
 
     try {
-      await fetch(apiUrl, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,13 +113,18 @@ export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
           role: selectedRole,
         }),
       });
+
+      if (!response.ok) {
+        throw new Error(`Server returned status code: ${response.status}`);
+      }
+
       setStatus('success');
     } catch (error) {
       console.error("Submission failed:", error);
-      // Fallback to success visual state anyway so user experience is not broken
-      setStatus('success');
+      setStatus('error');
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '16px', marginTop: isHero ? '48px' : '0', width: '100%', maxWidth: isHero ? '800px' : '600px', position: 'relative', pointerEvents: 'auto' }}>
@@ -133,8 +139,25 @@ export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
           >
             ✓ You're on the priority list!
           </motion.div>
+        ) : status === 'error' ? (
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="glass-panel"
+            style={{ padding: isHero ? '20px 40px' : '16px 24px', width: '100%', color: '#EF4444', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+          >
+            <span>Oops! Connection failed.</span>
+            <button 
+              type="button"
+              onClick={() => setStatus('idle')}
+              style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#FFF', padding: '6px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}
+            >
+              Try Again
+            </button>
+          </motion.div>
         ) : (
-          <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', gap: '16px', width: '100%', flexWrap: isHero ? 'nowrap' : 'wrap', justifyContent: isHero ? 'flex-start' : 'center' }}>
+          <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', gap: '16px', width: '100%', flexWrap: 'wrap', justifyContent: isHero ? 'flex-start' : 'center' }}>
             {isHero && <CustomDropdown selected={selectedRole} setSelected={setSelectedRole} />}
             <input 
               type="email" 
@@ -160,4 +183,3 @@ export const WaitlistForm = ({ isHero = false }: { isHero?: boolean }) => {
     </form>
   );
 };
-

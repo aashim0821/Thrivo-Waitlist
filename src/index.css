@@ -18,7 +18,7 @@
 body {
   font-family: 'Inter', sans-serif;
   color: var(--text-primary);
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: #0A0A0A;
 }
 
@@ -69,7 +69,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -335,6 +335,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   .pricing-grid {
     gap: 12px;
+    flex-direction: column;
   }
   .pricing-card, .pricing-card.premium {
     padding: 16px !important;
