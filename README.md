@@ -3,11 +3,12 @@
 Thrivo Waitlist is a beautiful, interactive, high-performance landing page designed for modern startups, creators, and investors. Built with React, Vite, Framer Motion, and Three.js for liquid glass animations and premium aesthetics.
 
 ## Features
-- ✨ **High-Performance Animations**: Powered by Framer Motion, Three.js, and Lenis smooth scrolling.
-- 🎨 **Liquid Glass Aesthetics**: Custom modern design with aurora gradients and responsive layouts.
-- 🗂️ **Bento Grid Design**: Showcases startup profiles, investor networks, creator marketplaces, and Thrivo AI features.
-- 📝 **Responsive Waitlist Forms**: Input form with dynamic role selector that scales perfectly on mobile and desktop.
-- 🔒 **Secure Google Sheets Backend**: Proxied through a serverless backend function to keep spreadsheet details private.
+- **High-Performance Animations**: Powered by Framer Motion, Three.js, and Lenis smooth scrolling.
+- **Liquid Glass Aesthetics**: Custom modern design with aurora gradients and responsive layouts.
+- **Bento Grid Design**: Showcases startup profiles, investor networks, creator marketplaces, and Thrivo AI features.
+- **Responsive Waitlist Forms**: Input form with dynamic role selector that scales perfectly on mobile and desktop.
+- **Secure Google Sheets Backend**: Proxied through a serverless backend function to keep spreadsheet details private.
+
 
 ---
 
